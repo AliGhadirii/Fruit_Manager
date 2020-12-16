@@ -1,6 +1,6 @@
 create table Person
 (
-	personid varchar(7) not null primary key,
+	personid int identity primary key,
 	firstname varchar(20),
 	lastname varchar(35),
 	date_of_birth datetime,
@@ -9,54 +9,58 @@ create table Person
 
 create table Customer
 (
-	customerid varchar(7) not null primary key,
-	personid varchar(7) not null,
+	customerid int identity primary key,
+	personid int,
 	foreign key (personid) references Person(personid)
 );
 
 create table Farmer
 (
-	farmerid varchar(7) not null primary key,
-	personid varchar(7) not null,
+	farmerid int identity primary key,
+	personid int,
 	foreign key (personid) references Person(personid)
 );
 
 create table Fruit
 (
-	fruitid varchar(7) not null primary key,
+	fruitid int identity primary key,
 	[name] varchar(20),
 	size varchar(3),
-	categoryid varchar(5) not null,
-	cityid varchar(5),
+	categoryid int,
+	cityid int,
 	foreign key (categoryid) references Category(categoryid),
 	foreign key (cityid) references City(cityid)
 );
 
+alter table Fruit
+add check (size in ('S','M','L','XL'));
+
+
 create table Category
 (
-	categoryid varchar(5) not null primary key,
+	categoryid int identity primary key,
 	[name] varchar(20)
 );
 
 create table City
 (
-	cityid varchar(5) not null primary key,
-	weatherid varchar(5),
+	cityid int identity primary key,
+	weatherid int,
 	[name] varchar(20),
 	foreign key (weatherid) references Weather(weatherid)
 );
 
 create table Weather
 (
-	weatherid varchar(5) not null primary key,
+	weatherid int identity primary key,
 	[name] varchar(30) 
 );
 
 create table buy_fruit
 (
-	paymentid varchar(5) not null primary key,
-	fruitid varchar(7) not null,
-	customerid varchar(7) not null,
+	paymentid int identity primary key,
+	fruitid int,
+	customerid int,
 	[weight] numeric(4,1),
 	total_price numeric(4,0),
 	dataofpayment datetime,
@@ -66,12 +70,108 @@ create table buy_fruit
 
 create table production
 (
-	proid varchar(5) not null primary key,
-	fruitid varchar(7) not null,
-	farmerid varchar(7) not null,
+	proid int identity primary key,
+	fruitid int,
+	farmerid int,
 	amount numeric(6,1),
 	price_per_k numeric(4,1),
 	productiondate datetime,
 	foreign key (fruitid) references Fruit(fruitid),
 	foreign key (farmerid) references Farmer(farmerid)
 );
+
+
+
+
+
+insert into Weather(name)
+values ('windy');
+insert into Weather(name)
+values ('rainy');
+insert into Weather(name)
+values ('sunny');
+insert into Weather(name)
+values ('wet');
+--------------------------------------------------------
+insert into City(weatherid,name)
+values ('3','Esfahan');
+insert into City(weatherid,name)
+values ('3','shiraz');
+insert into City(weatherid,name)
+values ('3','mashhad');
+insert into City(weatherid,name)
+values ('3','kerman');
+insert into City(weatherid,name)
+values ('2','rasht');
+insert into City(weatherid,name)
+values ('3','ahvaz');
+--------------------------------------------------------
+insert into Category(name)
+values ('fruit');
+insert into Category(name)
+values ('vegetable');
+insert into Category(name)
+values ('nut');
+--------------------------------------------------------
+insert into Fruit(name,size,categoryid,cityid)
+values ('orange','M','1','5');
+insert into Fruit(name,size,categoryid,cityid)
+values ('apple','M','1','1');
+insert into Fruit(name,size,categoryid,cityid)
+values ('Narenj','M','1','2');
+insert into Fruit(name,size,categoryid,cityid)
+values ('potato','M','1','3');
+insert into Fruit(name,size,categoryid,cityid)
+values ('tomato','M','1','3');
+insert into Fruit(name,size,categoryid,cityid)
+values ('cucumber','M','1','1');
+insert into Fruit(name,size,categoryid,cityid)
+values ('date','S','3','6');
+insert into Fruit(name,size,categoryid,cityid)
+values ('pistachio','S','3','4');
+--------------------------------------------------------
+insert into Person(firstname,lastname,date_of_birth)
+values ('Ali','Ghadiri','1998-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('Mohammad','Ghadiri','1988-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('said','dayani','2002-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('adel','karshenas','2013-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('afrooz','goldaste','1993-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('shayan','shafie','1976-01-01 23:59:59');
+insert into Person(firstname,lastname,date_of_birth)
+values ('Ali','bighamian','1978-01-01 23:59:59');
+--------------------------------------------------------
+insert into Customer(personid)
+values ('1');
+insert into Customer(personid)
+values ('3');
+insert into Customer(personid)
+values ('7');
+insert into Customer(personid)
+values ('5');
+--------------------------------------------------------
+insert into Farmer(personid)
+values ('2');
+insert into Farmer(personid)
+values ('4');
+insert into Farmer(personid)
+values ('6');
+--------------------------------------------------------
+insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
+values ('1','1',300,10,getdate());
+insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
+values ('2','2',500,15,getdate());
+insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
+values ('5','3',800,14,getdate());
+
+
+
+
+
+
+
+
