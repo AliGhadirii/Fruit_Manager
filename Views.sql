@@ -73,22 +73,23 @@ create view manager_report_weather_fruit as
 		join Category e on b.categoryid=e.categoryid
 	group by cube(d.name,e.name,b.name)
 ---------------------------------------------------------
-with src as
-(
-	select 
-		a.fruitid,
-		b.name,
-		b.size
-	from 
-		buy_fruit a join Fruit b on a.fruitid = b.fruitid
-)
-select [name] as fruit_name, [S] as S, [M] as M, [L] as L
-from src
-pivot
-(
-	count(fruitid)
-	for size in ([S],[M],[L])
-) as pvt
+create view manager_report_size_fruit as
+	with src as
+	(
+		select 
+			a.fruitid,
+			b.name,
+			b.size
+		from 
+			buy_fruit a join Fruit b on a.fruitid = b.fruitid
+	)
+	select [name] as fruit_name, [S] as S, [M] as M, [L] as L
+	from src
+	pivot
+	(
+		count(fruitid)
+		for size in ([S],[M],[L])
+	) as pvt
 
 
 
