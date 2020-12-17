@@ -167,6 +167,16 @@ insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
 values ('2','2',500,15,getdate());
 insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
 values ('5','3',800,14,getdate());
+--------------------------------------------------------
+insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+values (1,2,3,getdate());
+insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+values (3,1,4,getdate());
+insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+values (2,3,2,getdate());
+insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+values (5,2,6,getdate());
+
 
 
 
