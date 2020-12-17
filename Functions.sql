@@ -27,4 +27,16 @@ RETURN
 );
 GO
 --------------------------------------------------------
---
+--returns the hole stock of a farmer given farmerid
+CREATE FUNCTION stock (@farmerid int)
+RETURNS TABLE
+AS
+RETURN
+(
+	select a.farmerid, c.name, b.amount, b.price_per_k, b.productiondate
+	from
+		Farmer a join production as b on a.farmerid = b.farmerid
+		join Fruit c on c.fruitid = b.fruitid
+	where a.farmerid = @farmerid
+);
+GO
