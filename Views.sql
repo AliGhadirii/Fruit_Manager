@@ -47,11 +47,48 @@ create view manager_report_city_fruit as
 		production a join Fruit b on a.fruitid=b.fruitid
 		join Category c on c.categoryid=b.categoryid
 		join City d on d.cityid = b.cityid
-	group by rollup(d.name,c.name,b.name)
+	group by cube(d.name,c.name,b.name)
 ---------------------------------------------------------
+create view manager_report_weather_fruit as
+	select
+		case grouping(b.name)
+			when 1 then 'All Fruits'
+			else b.name
+		end as fruit_name,
 
+		case grouping(e.name)
+			when 1 then 'All Category'
+			else e.name
+		end as Category,
 
-
+		case grouping(d.name)
+			when 1 then 'All Weather'
+			else d.name
+		end as Weather,
+		count(a.fruitid) as [Count]
+	from
+		buy_fruit a join fruit b on a.fruitid=b.fruitid
+		join city c on b.cityid=c.cityid
+		join Weather d on d.weatherid=c.weatherid 
+		join Category e on b.categoryid=e.categoryid
+	group by cube(d.name,e.name,b.name)
+---------------------------------------------------------
+with src as
+(
+	select 
+		a.fruitid,
+		b.name,
+		b.size
+	from 
+		buy_fruit a join Fruit b on a.fruitid = b.fruitid
+)
+select [name] as fruit_name, [S] as S, [M] as M, [L] as L
+from src
+pivot
+(
+	count(fruitid)
+	for size in ([S],[M],[L])
+) as pvt
 
 
 
