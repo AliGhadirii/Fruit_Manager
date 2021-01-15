@@ -12,6 +12,7 @@ SET @ret = 0;
 RETURN @ret;
 END;
 go
+
 --------------------------------------------------------
 --returns the log of purchases of a customer given customerid
 CREATE FUNCTION purchases (@customerid int)
@@ -22,10 +23,12 @@ RETURN
 	select a.customerid, c.name, b.weight, b.total_price, b.dataofpayment
 	from
 		Customer a join buy_fruit as b on a.customerid = b.customerid
-		join Fruit c on c.fruitid = b.fruitid
+		join production d on b.proid = d.proid
+		join Fruit c on c.fruitid = d.fruitid
 	where a.customerid = @customerid
 );
 GO
+
 --------------------------------------------------------
 --returns the hole stock of a farmer given farmerid
 CREATE FUNCTION stock (@farmerid int)
@@ -40,3 +43,5 @@ RETURN
 	where a.farmerid = @farmerid
 );
 GO
+
+
