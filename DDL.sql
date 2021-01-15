@@ -1,3 +1,37 @@
+create table Weather
+(
+	weatherid int identity primary key,
+	[name] varchar(30) 
+);
+
+create table Category
+(
+	categoryid int identity primary key,
+	[name] varchar(20)
+);
+
+create table City
+(
+	cityid int identity primary key,
+	weatherid int,
+	[name] varchar(20),
+	foreign key (weatherid) references Weather(weatherid)
+);
+
+create table Fruit
+(
+	fruitid int identity primary key,
+	[name] varchar(20),
+	size varchar(3),
+	categoryid int,
+	cityid int,
+	foreign key (categoryid) references Category(categoryid),
+	foreign key (cityid) references City(cityid)
+);
+alter table Fruit
+add check (size in ('S','M','L','XL'));
+
+
 create table Person
 (
 	personid int identity primary key,
@@ -21,53 +55,6 @@ create table Farmer
 	foreign key (personid) references Person(personid)
 );
 
-create table Fruit
-(
-	fruitid int identity primary key,
-	[name] varchar(20),
-	size varchar(3),
-	categoryid int,
-	cityid int,
-	foreign key (categoryid) references Category(categoryid),
-	foreign key (cityid) references City(cityid)
-);
-
-alter table Fruit
-add check (size in ('S','M','L','XL'));
-
-
-create table Category
-(
-	categoryid int identity primary key,
-	[name] varchar(20)
-);
-
-create table City
-(
-	cityid int identity primary key,
-	weatherid int,
-	[name] varchar(20),
-	foreign key (weatherid) references Weather(weatherid)
-);
-
-create table Weather
-(
-	weatherid int identity primary key,
-	[name] varchar(30) 
-);
-
-create table buy_fruit
-(
-	paymentid int identity primary key,
-	fruitid int,
-	customerid int,
-	[weight] numeric(4,1),
-	total_price numeric(4,0),
-	dataofpayment datetime,
-	foreign key (fruitid) references Fruit(fruitid),
-	foreign key (customerid) references Customer(customerid)
-);
-
 create table production
 (
 	proid int identity primary key,
@@ -80,6 +67,17 @@ create table production
 	foreign key (farmerid) references Farmer(farmerid)
 );
 
+create table buy_fruit
+(
+	paymentid int identity primary key,
+	proid int,
+	customerid int,
+	[weight] numeric(4,1),
+	total_price numeric(4,0),
+	dataofpayment datetime,
+	foreign key (proid) references production(proid),
+	foreign key (customerid) references Customer(customerid)
+);
 
 
 
@@ -168,20 +166,14 @@ values ('2','2',500,15,getdate());
 insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
 values ('5','3',800,14,getdate());
 --------------------------------------------------------
-insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (1,2,3,getdate());
-insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (3,1,4,getdate());
-insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
+insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,3,2,getdate());
-insert into buy_fruit(fruitid, customerid, weight, dataofpayment)
-values (5,2,6,getdate());
-
-
-
-
-
-
+insert into buy_fruit(proid, customerid, weight, dataofpayment)
+values (2,2,6,getdate());
 
 
 
