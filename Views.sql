@@ -1,16 +1,17 @@
 create view customer_view as
 	select
 		a.customerid,
-		b.name as fruit_name,
+		c.name as fruit_name,
 		c.name as city,
 		d.name as category,
 		a.weight,
 		a.total_price,
 		a.dataofpayment as purchase_date
 	from 
-		buy_fruit a join fruit b on a.fruitid=b.fruitid
-		join city c on b.cityid=c.cityid
-		join Category d on b.categoryid=d.categoryid;
+		buy_fruit a join production b on a.proid=b.proid
+		join Fruit e on b.fruitid = e.fruitid
+		join city c on e.cityid=c.cityid
+		join Category d on e.categoryid=d.categoryid;
 ---------------------------------------------------------
 create view farmer_view as
 	select 
@@ -65,9 +66,10 @@ create view manager_report_weather_fruit as
 			when 1 then 'All Weather'
 			else d.name
 		end as Weather,
-		count(a.fruitid) as [Count]
+		count(a.proid) as [Count]
 	from
-		buy_fruit a join fruit b on a.fruitid=b.fruitid
+		buy_fruit a join production f on a.proid=f.proid
+		join fruit b on b.fruitid = f.fruitid
 		join city c on b.cityid=c.cityid
 		join Weather d on d.weatherid=c.weatherid 
 		join Category e on b.categoryid=e.categoryid
@@ -77,11 +79,12 @@ create view manager_report_size_fruit as
 	with src as
 	(
 		select 
-			a.fruitid,
-			b.name,
-			b.size
+			b.fruitid,
+			c.name,
+			c.size
 		from 
-			buy_fruit a join Fruit b on a.fruitid = b.fruitid
+			buy_fruit a join production b on a.proid = b.proid
+			join Fruit c on c.fruitid = b.fruitid
 	)
 	select [name] as fruit_name, [S] as S, [M] as M, [L] as L
 	from src
