@@ -73,6 +73,17 @@ ALTER TABLE production
 ADD CONSTRAINT pro_date
 DEFAULT getdate() FOR productiondate;
 
+create table production_log
+(
+	proid int,
+	fruitid int,
+	farmerid int,
+	amount numeric(6,1),
+	price_per_k numeric(4,1),
+	productiondate datetime,
+	opperation varchar(20)
+);
+
 create table buy_fruit
 (
 	paymentid int identity primary key,
@@ -183,6 +194,8 @@ insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
 values ('2','2',500,15,getdate());
 insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
 values ('5','3',800,14,getdate());
+insert into production(fruitid,farmerid,amount,price_per_k,productiondate)
+values ('2','1',300,10,getdate());
 --------------------------------------------------------
 insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (1,2,3,getdate());
@@ -192,6 +205,3 @@ insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,3,2,getdate());
 insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,2,6,getdate());
-
-
-
