@@ -12,3 +12,29 @@ begin
 
 end
 -------------------------------------------------------------------------------------------------------
+create trigger fill_buy_log
+on buy_fruit
+after insert, delete, update
+as
+begin
+	DECLARE @oper varchar(10)
+	set @oper=
+		case
+			WHEN EXISTS(SELECT * FROM inserted) AND EXISTS(SELECT * FROM deleted) THEN 'Update'					
+			WHEN EXISTS(SELECT * FROM inserted) THEN 'Insert'					
+			WHEN EXISTS(SELECT * FROM deleted) THEN 'Delete'					
+			else NULL
+		end
+
+	if @oper = 'Delete'
+		insert into buy_fruit_log
+		select d.*, 'delete' from deleted as d;
+
+	if @oper = 'Update'
+		insert into buy_fruit_log
+		select d.*, 'Update' from inserted as d;
+
+	if @oper = 'Insert'
+		insert into buy_fruit_log
+		select i.*, 'Inserted' from inserted as i;
+end

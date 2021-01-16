@@ -88,6 +88,16 @@ ALTER TABLE buy_fruit
 ADD CONSTRAINT buy_date
 DEFAULT getdate() FOR dataofpayment;
 
+create table buy_fruit_log
+(
+	paymentid_log int,
+	proid int,
+	customerid int,
+	[weight] numeric(4,1),
+	total_price numeric(4,0),
+	dataofpayment datetime,
+	opperation varchar(20)
+);
 
 
 insert into Weather(name)
@@ -182,4 +192,6 @@ insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,3,2,getdate());
 insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,2,6,getdate());
+
+
 
