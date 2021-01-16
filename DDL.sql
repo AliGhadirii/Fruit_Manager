@@ -40,6 +40,9 @@ create table Person
 	date_of_birth datetime,
 	email varchar(40)
 );
+ALTER TABLE Person
+ADD CONSTRAINT birth_date
+DEFAULT '2000-11-11 1:00:00' FOR date_of_birth;
 
 create table Customer
 (
@@ -66,6 +69,9 @@ create table production
 	foreign key (fruitid) references Fruit(fruitid),
 	foreign key (farmerid) references Farmer(farmerid)
 );
+ALTER TABLE production
+ADD CONSTRAINT pro_date
+DEFAULT getdate() FOR productiondate;
 
 create table buy_fruit
 (
@@ -78,7 +84,9 @@ create table buy_fruit
 	foreign key (proid) references production(proid),
 	foreign key (customerid) references Customer(customerid)
 );
-
+ALTER TABLE buy_fruit
+ADD CONSTRAINT buy_date
+DEFAULT getdate() FOR dataofpayment;
 
 
 
@@ -174,6 +182,4 @@ insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,3,2,getdate());
 insert into buy_fruit(proid, customerid, weight, dataofpayment)
 values (2,2,6,getdate());
-
-
 
