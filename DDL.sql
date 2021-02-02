@@ -44,6 +44,14 @@ ALTER TABLE Person
 ADD CONSTRAINT birth_date
 DEFAULT '2000-11-11 1:00:00' FOR date_of_birth;
 
+alter table Person
+Add Total_Balance numeric(10,2);
+
+ALTER TABLE Person
+ADD check (Total_Balance >= 0)
+
+
+
 create table Customer
 (
 	customerid int identity primary key,
